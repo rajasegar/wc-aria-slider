@@ -1,0 +1,32 @@
+{
+  "name": "wc-aria-slider",
+  "version": "1.0.0",
+  "description": "A Web Component for Slider based on WAI-ARIA authoring practices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'Error: no test specified' && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajasegar/wc-aria-slider.git"
+  },
+  "keywords": [
+    "slider",
+    "aria",
+    "a11y",
+    "webcomponents",
+    "customelements"
+  ],
+  "author": "Rajasegar Chandran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rajasegar/wc-aria-slider/issues"
+  },
+  "homepage": "https://github.com/rajasegar/wc-aria-slider#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3"
+  },
+  "dependencies": {
+    "babel-plugin-transform-custom-element-classes": "^0.1.0"
+  }
+}
