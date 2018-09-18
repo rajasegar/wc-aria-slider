@@ -42,17 +42,17 @@ function getColorHex(r,g,b) {
   var gx = parseInt(g).toString(16);
   var bx = parseInt(b).toString(16);
 
-      if (rx.length === 1) {
-              rx = '0' + rx;
-            }
-      if (gx.length === 1) {
-              gx = '0' + gx;
-            }
-      if (bx.length === 1) {
-              bx = '0' + bx;
-            }
+  if (rx.length === 1) {
+    rx = '0' + rx;
+  }
+  if (gx.length === 1) {
+    gx = '0' + gx;
+  }
+  if (bx.length === 1) {
+    bx = '0' + bx;
+  }
 
-      return '#' + rx + gx + bx;
+  return '#' + rx + gx + bx;
 }
 
 }());

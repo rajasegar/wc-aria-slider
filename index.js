@@ -80,18 +80,10 @@
 }
 </style>
 <div class="aria-widget-slider">
-   <div class="rail" >
-    <div id="idRedValue"
-           role="slider"
-           tabindex="0"
-           class="thumb"
-           aria-valuemin="0"
-           aria-valuenow="0"
-           aria-valuemax="255"
-           aria-labelledby="idRed">
-      </div>
+   <div class="rail">
+    <div class="thumb"></div>
   </div>
-  <div class="value">0</div>
+    <div class="value">0</div>
 </div>
 `;
   class ARIASlider extends HTMLElement {
@@ -104,7 +96,7 @@
       this.addEventListener('focus', this._onFocus);
       this.addEventListener('blur', this._onBlur);
       let $thumb = this.shadowRoot.querySelector('.thumb');
-      $thumb.addEventListener('keydown', this._onKeyDown.bind(this));
+      this.addEventListener('keydown', this._onKeyDown.bind(this));
       $thumb.addEventListener('mousedown', this._onMouseDown.bind(this));
     }
 
@@ -123,14 +115,56 @@
     }
 
     connectedCallback() {
-      this._moveSliderTo(this.getAttribute('value'));
+
+      let _value = this.getAttribute('value');
+
+      // Set ARIA attributes
+      this.min = this.getAttribute('min');
+      this.max = this.getAttribute('max');
+      this.setAttribute('tabindex', 0);
+      this.setAttribute('role', 'slider');
+      this.setAttribute('aria-labelledby', this.getAttribute('labelledby'));
+
+      // Remove api properties
+      this.removeAttribute('min');
+      this.removeAttribute('max');
+      this.removeAttribute('value');
+      this.removeAttribute('labelledby');
+
+      this._moveSliderTo(_value);
     }
 
+    get min() {
+      return Number(this.getAttribute('aria-valuemin'));
+    }
+
+    set min(value) {
+      const _value = Number(value);
+      return this.setAttribute('aria-valuemin', _value);
+    }
+
+    get max() {
+      return Number(this.getAttribute('aria-valuemax'));
+    }
+
+    set max(value) {
+      const _value = Number(value);
+      return this.setAttribute('aria-valuemax', _value);
+    }
+
+    get value() {
+      return Number(this.getAttribute('aria-valuenow'));
+    }
+
+    set value(value) {
+      const _value = Number(value);
+      return this.setAttribute('aria-valuenow', _value);
+    }
 
     _onKeyDown(event) {
     var flag = false;
 
-    let currentVal = this.currentValue;
+    let currentVal = this.value;
     switch (event.keyCode) {
       case KEYCODES.left:
       case KEYCODES.down:
@@ -155,12 +189,12 @@
         break;
 
       case KEYCODES.home:
-        this._moveSliderTo(this.get('minValue'));
+        this._moveSliderTo(this.min);
         flag = true;
         break;
 
       case KEYCODES.end:
-        this._moveSliderTo(this.get('maxValue'));
+        this._moveSliderTo(this.max);
         flag = true;
         break;
 
@@ -176,8 +210,8 @@
 
     _onMouseDown(e) {
     let parentNode = e.target.parentNode;
-    let minValue = this.getAttribute('min');
-    let maxValue = this.getAttribute('max');
+    let minValue = this.min;
+    let maxValue = this.max;
 
     let handleMouseMove = (event) => {
 
@@ -209,8 +243,8 @@
     }
 
     _moveSliderTo(value) {
-      let minValue = Number(this.getAttribute('min'));
-      let maxValue = Number(this.getAttribute('max'));
+      let minValue = this.min;
+      let maxValue = this.max;
 
       let _value = Number(value);
 
@@ -222,8 +256,7 @@
         _value = maxValue;
       }
 
-      this.currentValue = _value;
-      this.setAttribute('value', _value);
+      this.value = _value;
       let $value = this.shadowRoot.querySelector('.value');
       $value.textContent = _value;
 
@@ -245,9 +278,7 @@
 
     }
 
-    updateARIAValues() {
-
-    }
+    
   }
 
   window.customElements.define('aria-slider', ARIASlider);
